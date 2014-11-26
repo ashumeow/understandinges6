@@ -1,8 +1,21 @@
 # Objects
 
-A lot of ECMAScript 6 focused on improving the utility of objects. The focus makes sense given that nearly every value in JavaScript is represented by some type of object. Additionally, the number of objects used in an average Javascript program continues to increase, meaning that developers are writing more objects all the time. With more objects comes the ability to use them more effectively.
+W> This chapter is a work-in-progress. As such, it may have more typos or content errors than others.
+
+A lot of ECMAScript 6 focused on improving the utility of objects. The focus makes sense given that nearly every value in JavaScript is represented by some type of object. Additionally, the number of objects used in an average Javascript program continues to increase, meaning that developers are writing more objects all the time. With more objects comes the necessity to use them more effectively.
 
 ECMAScript 6 improves objects in a number of ways, from simple syntax to new ways of manipulating and interacting with objects.
+
+## Object Categories
+
+The ECMAScript 6 specification introduced some new terminology to help distinguish between categories of objects. JavaScript has long been littered with a mix of terminology used to describe objects found in the standard as opposed to those that are added by execution environments such as the browser. ECMAScript 6 takes the time to clearly define each category of object, and it's important to understand this terminology to have a good understanding of the language as a whole. The object categories are:
+
+* *Ordinary objects* are objects that have all of the default internal behaviors for objects in JavaScript.
+* *Exotic objects* are objects whose internal behavior is different than the default in some way.
+* *Standard objects* are objects defined by ECMAScript 6, such as `Array`, `Date`, etc. Standard objects may be ordinary or exotic.
+* *Built-in objects* are objects that are present in a JavaScript execution environment when a script begins to execute. All standard objects are built-in objects.
+
+These terms are used throughout the book to explain the various objects defined by ECMAScript 6.
 
 ## Object Literal Extensions
 
@@ -12,23 +25,27 @@ One of the most popular patterns in JavaScript is the object literal. It's the s
 
 In ECMAScript 5 and earlier, object literals were simply collections of name-value pairs. That meant there could be some duplication when property values are being initialized. For example:
 
-    function createPerson(name, age) {
-        return {
-            name: name,
-            age: age
-        };
-    }
+```js
+function createPerson(name, age) {
+    return {
+        name: name,
+        age: age
+    };
+}
+```
 
 The `createPerson()` function creates an object whose property names are the same as the function parameter names. The result is what appears to be duplication of `name` and `age` even though each represents a different aspect of the process.
 
 In ECMAScript 6, you can eliminate the duplication that exists around property names and local variables by using the property initializer shorthand. When the property name is going to be the same as the local variable name, you can simply include the name without a colon and value. For example, `createPerson()` can be rewritten as follows:
 
-    function createPerson(name, age) {
-        return {
-            name,
-            age
-        };
-    }
+```js
+function createPerson(name, age) {
+    return {
+        name,
+        age
+    };
+}
+```
 
 When a property in an object literal only has a name and no value, the JavaScript engine looks into the surrounding scope for a variable of the same name. If found, that value is assigned to the same name on the object literal. So in this example, the object literal property `name` is assigned the value of the local variable `name`.
 
@@ -38,210 +55,235 @@ The purpose of this extension is to make object literal initialization even more
 
 ECMAScript 6 also improves syntax for assigning methods to object literals. In ECMAScript 5 and earlier, you must specify a name and then the full function definition to add a method to an object. For example:
 
-    var person = {
-        name: "Nicholas",
-        sayName: function() {
-            console.log(this.name);
-        }
-    };
+```js
+var person = {
+    name: "Nicholas",
+    sayName: function() {
+        console.log(this.name);
+    }
+};
+```
 
-In ECMAScript 6, the syntax is made more sustained by eliminating the colon and the `function` keyword. you can then rewrite this example as follows:
+In ECMAScript 6, the syntax is made more succinct by eliminating the colon and the `function` keyword. You can then rewrite the previous example as:
 
-    var person = {
-        name: "Nicholas",
-        sayName() {
-            console.log(this.name);
-        }
-    };
+```js
+var person = {
+    name: "Nicholas",
+    sayName() {
+        console.log(this.name);
+    }
+};
+```
 
-This shorthand syntax creates a method on the `person` object just as the previous example did. There is no difference aside from saving you some keystrokes.
+This shorthand syntax creates a method on the `person` object just as the previous example did. There is no difference aside from saving you some keystrokes, so `sayName()` is assigned an anonymous function expression and has all of the same characteristics as the function defined in the previous example.
+
+I> The `name` property of a method created using this shorthand is the name used before the parentheses. In the previous example, the `name` property for `person.sayName()` is `"sayName"`.
 
 ### Computed Property Names
 
 JavaScript objects have long had computed property names through the use of square brackets instead of dot notation. The square brackets allow you to specify property names using variables and string literals that may contain characters that would be a syntax error if used in an identifier. For example:
 
-    var person = {},
-        lastName = "last name";
+```js
+var person = {},
+    lastName = "last name";
 
-    person["first name"] = "Nicholas";
-    person[lastName] = "Zakas";
+person["first name"] = "Nicholas";
+person[lastName] = "Zakas";
 
-    console.log(person["first name"]);      // "Nicholas"
-    console.log(person[lastName]);          // "Zakas"
+console.log(person["first name"]);      // "Nicholas"
+console.log(person[lastName]);          // "Zakas"
+```
 
 Both of the property names in this example have a space, making it impossible to reference those names using dot notation. However, bracket notation allows any string value to be used as a property name.
 
 In ECMAScript 5, you could use string literals as property names in object literals, such as:
 
-    var person = {
-        "first name": "Nicholas"
-    };
+```js
+var person = {
+    "first name": "Nicholas"
+};
 
-    console.log(person["first name"]);      // "Nicholas"
+console.log(person["first name"]);      // "Nicholas"
+```
 
 If you could provide the string literal inside of the object literal property definition then you were all set. If, however, the property name was contained in a variable or had to be calculated, then there was no way to define that property using an object literal.
 
 ECMAScript 6 adds computed property names to object literal syntax by using the same square bracket notation that has been used to reference computed property names in object instances. For example:
 
-    var lastName = "last name";
+```js
+var lastName = "last name";
 
-    var person = {
-        "first name": "Nicholas",
-        [lastName]: "Zakas"
-    };
+var person = {
+    "first name": "Nicholas",
+    [lastName]: "Zakas"
+};
 
-    console.log(person["first name"]);      // "Nicholas"
-    console.log(person[lastName]);          // "Zakas"
+console.log(person["first name"]);      // "Nicholas"
+console.log(person[lastName]);          // "Zakas"
+```
 
 The square brackets inside of the object literal indicate that the property name is computed, so its contents are evaluated as a string. That means you can also include expressions such as:
 
-    var suffix = " name";
+```js
+var suffix = " name";
 
-    var person = {
-        ["first" + suffix]: "Nicholas",
-        ["last" + suffix]: "Zakas"
-    };
+var person = {
+    ["first" + suffix]: "Nicholas",
+    ["last" + suffix]: "Zakas"
+};
 
-    console.log(person["first name"]);      // "Nicholas"
-    console.log(person[lastName]);          // "Zakas"
+console.log(person["first name"]);      // "Nicholas"
+console.log(person["last name"]);       // "Zakas"
+```
 
 Anything you would be inside of square brackets while using bracket notation on object instances will also work for computed property names inside of object literals.
 
-## Symbols
-
-ECMAScript 6 symbols began as a way to create private object members, a feature JavaScript developers have long wanted. The focus was around creating properties that were not identified by string names. Any property with a string name was easy picking to access regardless of the obscurity of the name. The initial "private names" feature aimed to create non-string property names. That way, normal techniques for detecting these private names wouldn't work.
-
-The private names proposal eventually evolved into ECMAScript 6 symbols. While the implementation details remained the same (non-string values for property identifiers), TC-39 dropped the requirement that these properties be private. Instead, the properties would be categorized separately, being non-enumerable by default by still discoverable.
-
-Symbols are actually a new kind of primitive value, joining strings, numbers, booleans, `null`, and `undefined`. They are unique among JavaScript primitives in that they do not have a literal form. The ECMAScript 6 standard uses a special notation to indicate symbols, prefixing the identifier with `@@`, such as `@@create`. This book uses this same convention for ease of understanding.
-
-W> Despite the notation, symbols do not exactly map to strings beginning with "@@". Don't try to use string values where symbols are required.
-
-### Creating Symbols
-
-You can create a symbol by using the `Symbol` function, such as:
-
-    var firstName = Symbol();
-    var person = {};
-
-    person[firstName] = "Nicholas";
-    console.log(person[firstName]);     // "Nicholas"
-
-In this example, the symbol `firstName` is created and used to assign a new property on `person`. That symbol must be used each time you want to access that same property. It's a good idea to name the symbol variable appropriately so you can easily tell what the symbol represents.
-
-W> Because symbols are primitive values, `new Symbol()` throws an error when called. It's not possible to create an instance of `Symbol`, which also differentiates it from `String`, `Number`, and `Boolean`.
-
-The `Symbol` function accepts an optional argument that is the description of the symbol. The description itself cannot be used to access the property but is used for debugging purposes. For example:
-
-    var firstName = Symbol("first name");
-    var person = {};
-
-    person[firstName] = "Nicholas";
-
-    console.log("first name" in person);        // false
-    console.log(person[firstName]);             // "Nicholas"
-    console.log(firstName);                     // "Symbol(first name)"
-
-A symbol's description is stored internally in a property called `[[Description]]`. This property is read whenever the symbol's `toString()` method is called either explicitly or implicitly (as in this example). It is not otherwise possible to access `[[Description]]` directly from code. It's recommended to always provide a description to make both reading and debugging code using symbols easier.
-
-### Identifying Symbols
-
-Since symbols are primitive values, you can use the `typeof` operator to identify them. ECMAScript 6 extends `typeof` to return `"symbol"` when used on a symbol. For example:
-
-    var symbol = Symbol("test symbol");
-    console.log(typeof symbol);         // "symbol"
-
-While there are other indirect ways of determining whether a variable is a symbol, `typeof` is the most accurate and preferred way of doing so.
-
-### Using Symbols
-
-You can use symbols anywhere you would use a computed property name. You've already seen the use of bracket notation in the previous sections, but you can use symbols in computed object literal property names as well as with `Object.defineProperty()`, and `Object.defineProperties()`, such as:
-
-    var firstName = Symbol("first name");
-    var person = {
-        [firstName]: "Nicholas"
-    };
-
-    // make the property read only
-    Object.defineProperty(person, firstName, { writable: false });
-
-    var lastName = Symbol("last name");
-
-    Object.defineProperties(person, {
-        [lastName]: {
-            value: "Zakas",
-            writable: false
-        }
-    });
-
-    console.log(person[firstName]);     // "Nicholas"
-    console.log(person[lastName]);      // "Zakas"
-
-With computer property names in object literals, symbols are very easy to work with.
-
-### Sharing Symbols
-
-You may find that you want different parts of your code to use the same symbols. For example, suppose you have two different object types in your application that should use the same symbol property to represent a unique identifier. Keeping track of symbols across files or large codebases can be difficult and error-prone. That's why ECMAScript 6 provides a global symbol registry that you can access at any point in time.
-
-When you want to create a symbol to be shared, use the `Symbol.for()` method instead of calling `Symbol()`. The `Symbol.for()` method accepts a single parameter, which is a string identifier for the symbol you want to create (this value doubles as the description). For example:
-
-    var uid = Symbol.for("uid");
-    var object = {};
-
-    object[uid] = "12345";
-
-    console.log(object[uid]);       // "Nicholas"
-    console.log(uid);               // "Symbol(uid)"
-
-The `Symbol.for()` method first searches the global symbol registry to see if a symbol with the key `"uid"` exists. If so, then it returns the already existing symbol. If no such symbol exists, then a new symbol is created and registered into the global symbol registry using the specified key. The new symbol is then returned. That means subsequent calls to `Symbol.for()` using the same key will return the same symbol:
-
-    var uid = Symbol.for("uid");
-    var object = {};
-
-    object[uid] = "12345";
-
-    console.log(object[uid]);       // "Nicholas"
-    console.log(uid);               // "Symbol(uid)"
-
-    var uid2 = Symbol.for("uid");
-
-    console.log(uid === uid2);      // true
-    console.log(object[uid2]);      // "Nicholas"
-    console.log(uid2);              // "Symbol(uid)"
-
-In this example, `uid` and `uid2` contain the same symbol and so they can be used interchangeably. The first call to `Symbol.for()` creates the symbol and second call retrieves the symbol from the global symbol registry.
-
-Another unique aspect of shared symbols is that you can retrieve the key associated with a symbol in the global symbol registry by using `Symbol.keyFor()`, for example:
-
-    var uid = Symbol.for("uid");
-    console.log(Symbol.keyFor(uid));    // "uid"
-
-    var uid2 = Symbol.for("uid");
-    console.log(Symbol.keyFor(uid2));   // "uid"
-
-    var uid3 = Symbol("uid");
-    console.log(Symbol.keyFor(uid3));   // undefined
-
-Notice that both `uid` and `uid2` return the key `"uid"`. The symbol `uid3` doesn't exist in the global symbol registry, so it has no key associated with it and so `Symbol.keyFor()` returns `undefined`.
-
-W> The global symbol registry is a shared environment, just like the global scope. That means you can't make assumptions about what is or is not already present in that environment. You should use namespacing of symbol keys to reduce the likelihood of naming collisions when using third-party components. For example, jQuery might prefix all keys with `"jquery."`, such as `"jquery.element"`.
-
-### Finding Object Symbols
-
-TODO
-
-## Object Destructuring
-
-TODO
-
 ## Object.assign()
 
-TODO
+One of the most popular patterns for object composition is *mixins*, in which one object receives properties and methods from another object. Many JavaScript libraries have a mixin method similar to this:
 
-## ~~__proto__~~ Object.setPrototypeOf()
+```js
+function mixin(receiver, supplier) {
+    Object.keys(supplier).forEach(function(key) {
+        receiver[key] = supplier[key];
+    });
+
+    return receiver;
+}
+```
+
+The `mixin()` function iterates over the own properties of `supplier` and copies them onto `receiver`. This allows the `receiver` to gain new behaviors without inheritance. For example:
+
+```js
+function EventTarget() { /*...*/ }
+EventTarget.prototype = {
+    constructor: EventTarget,
+    emit: function() { /*...*/ },
+    on: function() { /*...*/ }
+}
+
+var myObject = {}
+mixin(myObject, EventTarget.prototype);
+
+myObject.emit("somethingChanged");
+```
+
+In this example, `myObject` receives behavior from `EventTarget.prototype`. This gives `myObject` the ability to publish events and let others subscribe to them using `emit()` and `on()`, respectively.
+
+This pattern became popular enough that ECMAScript 6 added `Object.assign()`, which behaves the same way. The difference in name is to reflect the actual operation that occurs. Since the `mixin()` method uses the assignment operator (`=`), it cannot copy accessor properties to the receiver as accessor properties. The name `Object.assign()` was chosen to reflect this distinction.
+
+You can use `Object.assign()` anywhere the `mixin()` function would have been used:
+
+```js
+function EventTarget() { /*...*/ }
+EventTarget.prototype = {
+    constructor: EventTarget,
+    emit: function() { /*...*/ },
+    on: function() { /*...*/ }
+}
+
+var myObject = {}
+Object.assign(myObject, EventTarget.prototype);
+
+myObject.emit("somethingChanged");
+```
+
+The `Object.assign()` method accepts any number of suppliers, and the receiver receives the properties in the order in which the suppliers are specified. That means the second supplier might overwrite a value from the first supplier on the receiver. For example:
+
+```js
+var receiver = {};
+
+Object.assign(receiver, {
+        type: "js",
+        name: "file.js"
+    }, {
+        type: "css"
+    }
+);
+
+console.log(receiver.type);     // "css"
+console.log(receiver.name);     // "file.js"
+```
+
+The value of `receiver.type` is `"css"` because the second supplier overwrote the value of the first.
+
+The `Object.assign()` method isn't a big addition to ECMAScript 6, but it does formalize a common function that is found in many JavaScript libraries.
+
+A> ### Working with Accessor Properties
+A>
+A> Keep in mind that you cannot create accessor properties on the receiver by using a supplier with accessor properties. Since `Object.assign()` uses the assignment operator, an accessor property on a supplier will become a data property on the receiver. For example:
+A>
+A> ```js
+A> var receiver = {},
+A>     supplier = {
+A>         get name() {
+A>             return "file.js"
+A>         }
+A>     };
+A>
+A> Object.assign(receiver, supplier);
+A>
+A> var descriptor = Object.getOwnPropertyDescriptor(receiver, "name");
+A>
+A> console.log(descriptor.value);      // "file.js"
+A> console.log(descriptor.get);        // undefined
+A> ```
+A>
+A> In this code, the `supplier` has an accessor property called `name`. After using `Object.assign()`, `receiver.name` exists as a data property with the value of `"file.js"`. That's because `supplier.name` returned "file.js" at the time `Object.assign()` was called.
+
+## Duplicate Object Literal Properties
+
+ECMAScript 5 strict mode introduced a check for duplicate object literal properties that would throw an error if a duplicate was found. For example:
+
+```js
+var person = {
+    name: "Nicholas",
+    name: "Greg"        // syntax error in ES5 strict mode
+};
+```
+
+When running in ECMAScript 5 strict mode, this example results in a syntax error on the second `name` property.
+
+In ECMAScript 6, the duplicate property check has been removed. This change was made due to the additional complexity of spread arguments in object destructuring. Both strict and nonstrict mode code no longer check for duplicate properties and instead take the last property of the given name as the actual value.
+
+```js
+var person = {
+    name: "Nicholas",
+    name: "Greg"        // not an error in ES6
+};
+
+console.log(person.name);       // "Greg"
+```
+
+In this example, the value of `person.name` is `"Greg"` because that was the last value assigned to the property.
+
+
+## __proto__, Object.setPrototypeOf()
 
 TODO
 
 ## super
+
+toMethod()
+
+TODO
+
+## Reflection Methods
+
+TODO
+
+### Object.getOwnPropertyDescriptors()
+
+TODO
+
+### Object.getPropertyNames()
+
+TODO
+
+### Object.getPropertyDescriptor()
+
+TODO
+
+## Summary
 
 TODO

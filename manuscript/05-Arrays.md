@@ -3,10 +3,13 @@
 TODO
 
 ## New Methods
+
 TODO
 
 
-###
+## Species Pattern
+
+TODO
 
 ## Creating Arrays
 
@@ -18,17 +21,11 @@ TODO
 
 TODO
 
-## for-of
-
-TODO
-
 ## The Spread Operator
 
 TODO
 
-## Destructuring Assignments
-
-TODO
+Also works on strings.
 
 ## Subclassing Arrays
 

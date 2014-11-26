@@ -14,7 +14,11 @@ ECMAScript 3.1 was eventually standardized as the fifth edition of ECMA-262, als
 
 ECMAScript 6 reached feature complete status in 2014. The features vary widely from completely new objects and patterns to syntax changes to new methods on existing objects. The exciting thing about ECMAScript 6 is that all of these changes are geared towards problems that developers are actually facing. And while it will still take time for adoption and implementation to reach the point where ECMAScript 6 is the minimum that developers can expect, there's a lot to be gained from a good understanding of what the future of JavaScript looks like.
 
-## Who This Book Is for
+## Browser and Node.js Compatibility
+
+Many JavaScript environments, such as web browsers and Node.js, are actively working on implementing ECMAScript 6. This book does not attempt to address to inconsistencies between implementations and instead focuses on what the specification defines as the correct behavior. As such, it's possible that your JavaScript environment may not conform to the behavior described in this book.
+
+## Who This Book is For
 
 This book is intended as a guide for those who are already familiar with JavaScript and ECMAScript 5. While a deep understanding of the language isn't necessary to use this book, it is helpful in understanding the differences between ECMAScript 5 and 6. In particular, this book is aimed at intermediate-to-advanced JavaScript developers (both browser and Node.js environments) who want to learn about the future of the language.
 
@@ -26,7 +30,7 @@ This book is not for beginners who have never written JavaScript. You will need 
 
 **Chapter 2: Functions** discusses the various changes to functions. This includes the arrow function form, default parameters, rest parameters, and more.
 
-**Chapter 3: Objects** explains the changes to how objects are created, modified, and used. Topics include changes to object literal syntax, using symbols, and new reflection methods.
+**Chapter 3: Objects** explains the changes to how objects are created, modified, and used. Topics include changes to object literal syntax, and new reflection methods.
 
 **Chapter 4: Classes** introduces the first formal concept of classes in JavaScript. Often a point of confusion for those coming from other languages, the addition of class syntax in JavaScript makes the language more approachable to others and more concise for enthusiasts.
 
@@ -36,15 +40,17 @@ This book is not for beginners who have never written JavaScript. You will need 
 
 **Chapter 7: Collections** details the new collection types of `Set`, `WeakSet`, `Map`, and `WeakMap`. These types expand on the usefulness of arrays by adding semantics, de-duping, and memory management designed specifically for JavaScript.
 
-**Chapter 8: Proxies** discusses the new proxy object that allows you to intercept every operation performed on an object. Proxies give developers unprecedented control over objects and, as such, unlimited possibilities for defining new interaction patterns.
+**Chapter 8: Symbols** introduces the concept of symbols, a new way to define properties. Symbols are a new primitive type that can be used to obscure (but not hide) object properties and methods.
 
-**Chapter 9: Promises** introduces promises as a new part of the language. Promises were a grassroots effort that eventually took off and gained in popularity due to extensive library support. ECMAScript 6 formalizes promises and makes them available by default.
+**Chapter 9: Proxies** discusses the new proxy object that allows you to intercept every operation performed on an object. Proxies give developers unprecedented control over objects and, as such, unlimited possibilities for defining new interaction patterns.
 
-**Chapter 10: Modules** details the official module format for JavaScript. The intent is that these modules can replace the numerous ad-hoc module definition formats that have appeared over the years.
+**Chapter 10: Promises** introduces promises as a new part of the language. Promises were a grassroots effort that eventually took off and gained in popularity due to extensive library support. ECMAScript 6 formalizes promises and makes them available by default.
 
-**Chapter 11: Template Strings** discusses the new built-in templating functionality. Template strings are designed to easily create DSLs in a secure way.
+**Chapter 11: Modules** details the official module format for JavaScript. The intent is that these modules can replace the numerous ad-hoc module definition formats that have appeared over the years.
 
-**Chapter 12: Reflection** introduces the formalized reflection API for JavaScript. Similar to other languages, ECMAScript 6 reflection allows you to inspect objects at a granular level, even if you didn't create the object.
+**Chapter 12: Template Strings** discusses the new built-in templating functionality. Template strings are designed to easily create DSLs in a secure way.
+
+**Chapter 13: Reflection** introduces the formalized reflection API for JavaScript. Similar to other languages, ECMAScript 6 reflection allows you to inspect objects at a granular level, even if you didn't create the object.
 
 ## Help and Support
 
